@@ -140,20 +140,18 @@ const handleDiscordPostError = async (
 
 export const embed = async (qChannel, content) => {
   try {
-    await qChannel.send(content);
+    return qChannel.send(content);
   } catch (err) {
     return handleDiscordPostError(err, qChannel, 'embed', content);
   }
-  return 0;
 };
 
 export const message = async (qChannel, content) => {
   try {
-    await qChannel.send(content);
+    return qChannel.send(content);
   } catch (err) {
     return handleDiscordPostError(err, qChannel, 'message', content);
   }
-  return 0;
 };
 
 export const announcement = (content, channels) => {

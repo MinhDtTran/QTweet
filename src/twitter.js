@@ -323,13 +323,17 @@ export const getFilteredSubs = async (tweet) => {
 const streamData = async (tweet) => {
   const subs = await getFilteredSubs(tweet);
   if (subs.length === 0) return;
+  log(`Got tweet: ${tweet.id_str}`);
   const { embed, metadata } = await formatTweet(tweet);
-  subs.forEach(({ flags, qChannel }) => {
+  log(embed);
+  subs.forEach(async ({ flags, qChannel }) => {
     if (metadata.ping && flags.ping) {
       log('Pinging @everyone', qChannel);
       postMessage(qChannel, '@everyone');
     }
-    postEmbed(qChannel, embed);
+    const res = await postEmbed(qChannel, embed);
+    log(`Res for ${tweet.id} at ${qChannel.id}:`);
+    log(res);
   });
   if (tweet.is_quote_status) {
     const { embed: quotedEmbed } = await formatTweet(tweet.quoted_status, true);
